@@ -135,11 +135,19 @@ return [
         ],
 
         'broadcast' => [
-            'url'      => env('BROADCAST_REDIS_URL'),
-            'host'     => env('BROADCAST_REDIS_HOST', '127.0.0.1'),
-            'password' => env('BROADCAST_REDIS_PASSWORD', null),
-            'port'     => env('BROADCAST_REDIS_PORT', '6379'),
-            'database' => env('BROADCAST_REDIS_DB', '0'),
+            'url'      => env('REDIS_BROADCAST_URL'),
+            'host'     => env('REDIS_BROADCAST_HOST', '127.0.0.1'),
+            'password' => env('REDIS_BROADCAST_PASSWORD', null),
+            'port'     => env('REDIS_BROADCAST_PORT', '6379'),
+            'database' => env('REDIS_BROADCAST_DB', '0'),
+        ],
+
+        'queue' => [
+            'url'      => env('REDIS_QUEUE_URL'),
+            'host'     => env('REDIS_QUEUE_HOST', '127.0.0.1'),
+            'password' => env('REDIS_QUEUE_PASSWORD', null),
+            'port'     => env('REDIS_QUEUE_PORT', '6379'),
+            'database' => env('REDIS_QUEUE_DB', '0'),
         ],
 
         'cache' => [
