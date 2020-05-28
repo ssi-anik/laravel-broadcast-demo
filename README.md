@@ -5,7 +5,7 @@ Laravel Broadcast Demo
 **THIS PROJECT DOESN'T BOTHER REGARDING SECURITY. IT'S UPTO YOU HOW YOU WANT TO IMPLEMENT SECURITY**
 
 ### Requirements
-This project comes with Docker. If using docker, to minimize the docker build time, the project requires to `php`, `composer`, `node`, `npm`/`yarn` in your local machine.
+This project comes with Docker. If using docker, to minimize the docker build time, the project requires to `php`, `composer`, `node`, `npm` or `yarn` in your local machine.
 
 ### Installation
 - Clone this repository.
@@ -19,5 +19,5 @@ This project comes with Docker. If using docker, to minimize the docker build ti
 - `docker-compose up -d --build` to start the project containers.
 - Run `http://IP_ADDRESS:NGINX_PORT_NUMBER` to run the project. Example: `http://127.0.0.1:PORT_NUMBER`.
 
-**N.B: If you're working locally, it's mandatory to download the requirements via composer.**
+**N.B: If you're working locally, it's mandatory to download the requirements via composer & npm or yarn.**
 
