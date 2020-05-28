@@ -12,6 +12,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",
+        "pda/pheanstalk": "^4.0",
         "predis/predis": "^1.1"
     },
     "require-dev": {
