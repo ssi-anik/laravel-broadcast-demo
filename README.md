@@ -1,6 +1,9 @@
 Laravel Broadcast Demo
 ---
 
+# WARNING
+**THIS PROJECT DOESN'T BOTHER REGARDING SECURITY. IT'S UPTO YOU HOW YOU WANT TO IMPLEMENT SECURITY**
+
 ### Key generation
 You can use any of the following to generate random key if you have PHP installed in your machine.
 - `php artisan key:generate --ansi --show`
@@ -23,3 +26,4 @@ This project comes with Docker. If using docker, to minimize the docker build ti
 - Run `http://IP_ADDRESS:NGINX_PORT_NUMBER` to run the project. Example: `http://127.0.0.1:PORT_NUMBER`.
 
 **N.B: If you're working locally, it's mandatory to download the requirements via composer.**
+
