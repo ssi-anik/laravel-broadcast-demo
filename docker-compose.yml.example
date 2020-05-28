@@ -1,0 +1,82 @@
+version: '2'
+
+services:
+    nginx:
+        image: nginx:1.13.6
+        ports:
+            - 80:80
+        volumes:
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        volumes_from:
+            - php
+
+    php:
+        build:
+            context: .
+            dockerfile: ./docker/php/Dockerfile
+        volumes:
+            - .:/var/www/html
+        links:
+            - redis
+            - postgres
+            - beanstalkd
+
+    worker:
+        build:
+            context: .
+            dockerfile: ./docker/php/worker.dockerfile
+        volumes:
+            - .:/var/www/html:cached
+        links:
+            - redis
+            - postgres
+            - beanstalkd
+
+    postgres:
+        image: postgres:10.4-alpine
+        ports:
+            - 5432:5432
+        volumes:
+            - ~/.backup/postgres/laravel-broadcast-demo:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=secret
+            - POSTGRES_DB=laravel-broadcast-demo
+
+    redis:
+        image: redis:5.0.5
+        ports:
+            - 6379:6379
+        volumes:
+            - ~/.backup/redis/laravel-broadcast-demo:/data
+
+    beanstalkd:
+        build: ./docker/beanstalkd
+        ports:
+            - 11300:11300
+        volumes:
+            - ~/.backup/beanstalkd/laravel-broadcast-demo:/binlog
+
+    beanstalk-console:
+        image: sirajul/beanstalk-console
+        ports:
+            - 9000:80
+        links:
+            - beanstalkd
+
+    echo:
+        image: oanhnn/laravel-echo-server
+        ports:
+            - 8080:6001
+        environment:
+            - "LARAVEL_ECHO_SERVER_DB=redis"
+            - "LARAVEL_ECHO_SERVER_AUTH_HOST=http://nginx:80"
+            - "LARAVEL_ECHO_SERVER_DEBUG=true"
+            - "REDIS_HOST=redis"
+            - "REDIS_PORT=6379"
+            - "REDIS_PASSWORD=null"
+            - "REDIS_KEY_PREFIX=echo_"
+            - "REDIS_DB=1"
+        links:
+            - redis
+            - nginx
