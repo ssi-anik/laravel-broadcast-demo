@@ -3,7 +3,7 @@
 @section('content')
 	<div class = "container">
 		<div class = "row justify-content-center">
-			<div class = "col-md-12">
+			<div class = "col-md-7">
 				<div class = "card">
 					<div class = "card-header">Users</div>
 
@@ -32,6 +32,29 @@
 					</div>
 				</div>
 			</div>
+			<div class = "col-md-5">
+				<div class = "card">
+					<div class = "card-header">Activities</div>
+
+					<div class = "card-body">
+						<table class = "table table-bordered">
+							<tbody id = "activities-tbody">
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+@endsection
+@section('js')
+	<script type = "text/javascript">
+        Echo.private('activities')
+            .listen('ActivityEvent', (e) => {
+                let msg = `<tr><td>${e.on}: ${e.action} - ${e.name} (username: ${e.username})</td></tr>`;
+                console.log(msg);
+                $("#activities-tbody").append(msg);
+            });
+	</script>
 @endsection
