@@ -17,7 +17,9 @@ This project comes with Docker. If using docker, to minimize the docker build ti
 - `composer install` to install dependencies.
 - `yarn install` or `npm install` to install JS dependencies.
 - `docker-compose up -d --build` to start the project containers.
+- Run `php artisan migrate:refresh --seed` from container or outside the container.
 - Run `http://IP_ADDRESS:NGINX_PORT_NUMBER` to run the project. Example: `http://127.0.0.1:PORT_NUMBER`.
+- Email: `admin@example.com` Password: `123456`
 
 **N.B: If you're working locally, it's mandatory to download the requirements via composer & npm or yarn.**
 
