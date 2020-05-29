@@ -21,8 +21,8 @@ window.Echo = new Echo({
 });
 
 window.Echo.connector.socket.on('connect', function () {
-    console.log('socket connected');
-    window.axios.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId();
+    console.log('socket connected: ' + window.Echo.socketId());
+    window.axios.defaults.headers.common['X-Socket-ID'] = window.Echo.socketId();
 })
 
 window.Echo.connector.socket.on('disconnect', function () {
