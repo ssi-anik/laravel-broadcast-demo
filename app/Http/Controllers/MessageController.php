@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Conversation;
 use App\Events\ConversationCreatedEvent;
+use App\Events\GroupMessageReceived;
 use App\Events\MessageReceivedEvent;
 use App\Events\MessageRequestedEvent;
 use App\Message;
@@ -84,6 +85,16 @@ class MessageController extends Controller
             return response()->json([ 'error' => true, 'message' => 'Text message is empty' ], 422);
         }
 
-        return response()->json([ 'error' => false, 'message' => $message, 'time' => now()->diffForHumans() ], 200);
+        $data = [
+            'message' => $message,
+            'sender'  => auth()->user()->username,
+            'time'    => now()->subSeconds(5)->diffForHumans(),
+        ];
+
+        broadcast(new GroupMessageReceived($data))->toOthers();
+
+        return response()->json(array_merge([
+            'error' => false,
+        ], $data), 200);
     }
 }
