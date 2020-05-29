@@ -1,5 +1,8 @@
 @extends('layouts.app')
-
+@section('css')
+	{{--<link href = "https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.css" rel = "stylesheet" />--}}
+	<link rel = "stylesheet" href = "//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+@endsection
 @section('content')
 	<div class = "container">
 		<div class = "row justify-content-center">
@@ -49,7 +52,22 @@
 	</div>
 @endsection
 @section('js')
+	{{--<script src = "https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.js"></script>--}}
+	<script type = "text/javascript" src = "//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script type = "text/javascript">
+        function showToast (title, content = null, type = 'info')
+        {
+            toastr.options.progressBar = true;
+            toastr[type](content, title)
+            toastr.options.onclick = function () {
+                toastr.clear();
+            }
+            /*let toast = new Toasty({
+                transition: postition, autoClose: true, progressBar: true, duration: 8000,
+            });
+            toast[type](title)*/
+        }
+
         function openInNewTab (url)
         {
             window.open(url, '_blank').focus();
