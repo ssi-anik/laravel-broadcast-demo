@@ -62185,7 +62185,7 @@ try {
 
   __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 
-  __webpack_require__(/*! toastr */ "./node_modules/toastr/toastr.js");
+  window.toastr = __webpack_require__(/*! toastr */ "./node_modules/toastr/toastr.js");
 } catch (e) {}
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");

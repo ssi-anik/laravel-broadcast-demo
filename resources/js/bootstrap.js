@@ -5,7 +5,7 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-    require('toastr');
+    window.toastr = require('toastr');
 } catch ( e ) {
 }
 

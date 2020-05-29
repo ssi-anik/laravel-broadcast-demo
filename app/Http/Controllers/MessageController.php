@@ -26,7 +26,7 @@ class MessageController extends Controller
             ]);
         }
         $conversation = Conversation::with('byUser', 'withUser')->where(function ($q) use ($id) {
-            $q->where('by', $id)->orWhere('with', $id);
+            $q->whereIn('by', [ $id, auth()->id() ])->whereIn('with', [ $id, auth()->id() ]);
         })->first();
 
         if (!$conversation) {

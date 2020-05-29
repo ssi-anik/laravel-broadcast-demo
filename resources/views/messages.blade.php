@@ -1,7 +1,4 @@
 @extends('layouts.app')
-@section('css')
-	<link rel = "stylesheet" href = "//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-@endsection
 
 @section('content')
 	<div class = "container">
@@ -10,6 +7,9 @@
 				<div class = "card">
 					<div class = "card-header">
 						Messages with "{{ $conversation->by == auth()->user()->id ? $conversation->withUser->username : $conversation->byUser->username }}"
+						<span class = "float-right">
+							You: {{ auth()->user()->username}}
+						</span>
 					</div>
 
 					<div class = "card-body">
@@ -31,7 +31,7 @@
 								</tr>
 							@empty
 								<tr>
-									<td class = "text-center">No message shared yet</td>
+									<td class = "text-center">No message was yet shared between you</td>
 								</tr>
 							@endforelse
 							</tbody>
@@ -44,7 +44,6 @@
 @endsection
 
 @section('js')
-	<script type = "text/javascript" src = "//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script type = "text/javascript">
         let message_count = "{{ $messages->count() }}";
         let conversation_id = "{{ $conversation->id }}";
@@ -53,6 +52,7 @@
             .listen('.message-received', (e) => {
                 console.log('received message: ', e);
                 prepend_message(e.message, e.on, 'text-left');
+                ++message_count;
             });
 
         function show_toast (title, content = null, type = 'info')
@@ -67,6 +67,9 @@
         function prepend_message (message, time, direction)
         {
             let msg = `<tr><td class = "${direction}"> ${time} - ${message} </td></tr>`;
+            if ( message_count == 0 ) {
+                $("#messages-tbody").empty();
+            }
             $("#messages-tbody").prepend(msg);
         }
 
@@ -88,6 +91,7 @@
                 }
             }).then(function (response) {
                 prepend_message(response.data.message, response.data.time, 'text-right');
+                ++message_count;
                 $("#message").val('');
             }).catch(function (error) {
                 show_toast("Error occurred", error.response.data.message, 'error');
