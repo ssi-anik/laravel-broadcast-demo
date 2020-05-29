@@ -73,4 +73,17 @@ class MessageController extends Controller
         return response()->json([ 'error' => false, 'message' => $message, 'time' => now()->diffForHumans() ], 200);
 
     }
+
+    public function groupMessage () {
+        return view('group-chat');
+    }
+
+    public function postGroupMessage (Request $request) {
+        $message = trim($request->input('message'));
+        if (!$message) {
+            return response()->json([ 'error' => true, 'message' => 'Text message is empty' ], 422);
+        }
+
+        return response()->json([ 'error' => false, 'message' => $message, 'time' => now()->diffForHumans() ], 200);
+    }
 }

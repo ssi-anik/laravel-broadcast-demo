@@ -19,3 +19,7 @@ Broadcast::channel('conversation-{id}', function ($user, $id) {
 
     return $conversation && ($conversation->by == $user->id || $conversation->with == $user->id);
 });
+
+Broadcast::channel('group-conversation', function ($user) {
+    return [ 'id' => $user->id, 'name' => $user->name, 'username' => $user->username ];
+});
