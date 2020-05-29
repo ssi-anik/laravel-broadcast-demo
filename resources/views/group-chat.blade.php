@@ -135,32 +135,29 @@
         });
 
         let groupChannel = Echo.join('group-conversation');
+
         groupChannel.here((users) => {
             console.log('here: ', users);
             $(users).each(function (index, item) {
                 add_user(item);
             });
-        })
-            .joining((user) => {
-                console.log('joining: ', user);
-                add_user(user);
-            })
-            .listenForWhisper('typing', (e) => {
-                console.log('Event typing', e);
-                if ( e.typing ) {
-                    $('#who-is').text(e.user.name);
-                    $('.typing').show();
-                } else {
-                    $('.typing').hide();
-                }
-            })
-            .leaving((user) => {
-                console.log('leaving: ', user);
-                remove_user(user);
-            })
-            .listen('.group-message-received', (e) => {
-                prepend_message(e.message, e.time, e.sender, 'text-left');
-            });
+        }).joining((user) => {
+            console.log('joining: ', user);
+            add_user(user);
+        }).listenForWhisper('typing', (e) => {
+            console.log('Event typing', e);
+            if ( e.typing ) {
+                $('#who-is').text(e.user.name);
+                $('.typing').show();
+            } else {
+                $('.typing').hide();
+            }
+        }).leaving((user) => {
+            console.log('leaving: ', user);
+            remove_user(user);
+        }).listen('.group-message-received', (e) => {
+            prepend_message(e.message, e.time, e.sender, 'text-left');
+        });
 
 
         $('#message').on('keyup', function (e) {
