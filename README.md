@@ -20,6 +20,7 @@ This project comes with Docker. If using docker, to minimize the docker build ti
 - Run `php artisan migrate:refresh --seed` from container or outside the container.
 - Run `http://IP_ADDRESS:NGINX_PORT_NUMBER` to run the project. Example: `http://127.0.0.1:PORT_NUMBER`.
 - Email: `admin@example.com` Password: `123456`
+- If you update the code further, then make sure to run `yarn run dev` if changed in `resource/js/app.js` `resource/js/bootstrap.js`.
 
 **N.B: If you're working locally, it's mandatory to download the requirements via composer & npm or yarn.**
 
