@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\ConversationCreatedEvent;
+use App\Events\ConversationStartedEvent;
+use App\Listeners\ConversationCreatedEventListener;
+use App\Listeners\ConversationStartedEventListener;
 use App\Listeners\LoginListener;
 use App\Listeners\LogoutListener;
 use Illuminate\Auth\Events\Login;
@@ -13,14 +17,20 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        Registered::class => [
+        Registered::class               => [
             SendEmailVerificationNotification::class,
         ],
-        Login::class      => [
+        Login::class                    => [
             LoginListener::class,
         ],
-        Logout::class     => [
+        Logout::class                   => [
             LogoutListener::class,
+        ],
+        ConversationCreatedEvent::class => [
+            ConversationCreatedEventListener::class,
+        ],
+        ConversationStartedEvent::class => [
+            ConversationStartedEventListener::class,
         ],
     ];
 

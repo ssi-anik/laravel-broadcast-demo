@@ -50,11 +50,30 @@
 @endsection
 @section('js')
 	<script type = "text/javascript">
+        function openInNewTab (url)
+        {
+            window.open(url, '_blank').focus();
+        }
+
+        let user_id = "{{ auth()->user()->id }}";
+        let base_url = "{{ config('app.url') }}";
+        let active_conversation = [];
+
         Echo.private('activities')
             .listen('ActivityEvent', (e) => {
                 let msg = `<tr><td>${e.on}: ${e.action} - ${e.name} (username: ${e.username})</td></tr>`;
                 console.log(msg);
                 $("#activities-tbody").append(msg);
             });
+
+        /*Echo.private('conversation-phases-' + user_id)
+            .listen('.started', function (e) {
+                let by = e.initiator;
+                if ( e.type == 'connecting' && active_conversation.indexOf(by) < 0 ) {
+                    active_conversation.push(by);
+                    console.log('opening new chat window for messaging with: ' + by);
+                    openInNewTab(base_url + "/messages/" + by);
+                }
+            });*/
 	</script>
 @endsection
