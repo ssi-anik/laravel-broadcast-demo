@@ -11,6 +11,10 @@ class Message extends Model
 
     protected $fillable = [ 'message', 'sender_id', 'conversation_id' ];
 
+    public function conversation () {
+        return $this->belongsTo(Conversation::class, 'conversation_id');
+    }
+
     public function sender () {
         return $this->belongsToMany(User::class);
     }

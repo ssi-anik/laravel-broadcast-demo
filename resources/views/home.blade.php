@@ -55,7 +55,7 @@
 	{{--<script src = "https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.js"></script>--}}
 	<script type = "text/javascript" src = "//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script type = "text/javascript">
-        function showToast (title, content = null, type = 'info')
+        function show_toast (title, content = null, type = 'info')
         {
             toastr.options.progressBar = true;
             toastr[type](content, title)

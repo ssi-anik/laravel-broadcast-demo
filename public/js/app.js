@@ -62198,7 +62198,6 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 });
 window.Echo.connector.socket.on('connect', function () {
   console.log('socket connected: ' + window.Echo.socketId());
-  window.axios.defaults.headers.common['X-Socket-ID'] = window.Echo.socketId();
 });
 window.Echo.connector.socket.on('disconnect', function () {
   console.log('socket disconnected');

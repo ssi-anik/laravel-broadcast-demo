@@ -5,5 +5,13 @@ Auth::routes([ 'register' => false ]);
 Route::group([ 'middleware' => 'auth' ], function () {
     Route::get('/', 'HomeController@index')->name('home');
 
-    Route::get('messages/{id}', 'MessageController@view')->name('private-chat')->where('id', '\d+');
+    Route::get('messages/{id}', [
+        'as'   => 'private-chat',
+        'uses' => 'MessageController@view',
+    ])->where('id', '\d+');
+
+    Route::post('conversation/{conversation}', [
+        'as'   => 'conversation-message',
+        'uses' => 'MessageController@addConversationMessage',
+    ])->where('conversation', '\d+');
 });

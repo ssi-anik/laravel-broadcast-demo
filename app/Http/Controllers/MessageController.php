@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Conversation;
 use App\Events\ConversationCreatedEvent;
-use App\Events\ConversationStartedEvent;
+use App\Events\MessageReceivedEvent;
 use App\Message;
 use App\User;
+use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
@@ -38,9 +39,36 @@ class MessageController extends Controller
             event(new ConversationCreatedEvent($conversation));
         }
 
-        $messages = Message::where('conversation_id', $conversation->id)->orderBy('id', 'desc')->limit(50)->get()->sortBy('id');
+        $messages = Message::where('conversation_id', $conversation->id)->orderBy('id', 'desc')->limit(50)->get();
+
         /*event(new ConversationStartedEvent($conversation, auth()->user()->id, $id));*/
 
         return view('messages', compact('messages', 'conversation'));
+    }
+
+    public function addConversationMessage (Request $request, $conversationId) {
+        $conversation = Conversation::find($conversationId);
+
+        if (!$conversation || !in_array(auth()->user()->id, [ $conversation->with, $conversation->by ])) {
+            return response()->json([ 'error' => true, 'message' => 'Invalid conversation!' ], 403);
+        }
+
+        $message = trim($request->input('message'));
+        if (!$message) {
+            return response()->json([ 'error' => true, 'message' => 'Text message is empty' ], 422);
+        }
+
+        $newMessage = new Message();
+        $newMessage->conversation_id = $conversationId;
+        $newMessage->sender_id = auth()->id();
+        $newMessage->message = $message;
+        $newMessage->save();
+
+        event(new MessageReceivedEvent($conversation, $newMessage));
+        // broadcast(new MessageReceivedEvent($conversation, $newMessage));
+        // dispatch(new BroadcastEvent(new MessageReceivedEvent($conversation, $newMessage)));
+
+        return response()->json([ 'error' => false, 'message' => $message, 'time' => now()->diffForHumans() ], 200);
+
     }
 }

@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Events\ConversationCreatedEvent;
 use App\Events\ConversationStartedEvent;
+use App\Events\MessageReceivedEvent;
 use App\Listeners\ConversationCreatedEventListener;
 use App\Listeners\ConversationStartedEventListener;
 use App\Listeners\LoginListener;
 use App\Listeners\LogoutListener;
+use App\Listeners\MessageReceivedEventListener;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\Events\Registered;
@@ -31,6 +33,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ConversationStartedEvent::class => [
             ConversationStartedEventListener::class,
+        ],
+        MessageReceivedEvent::class     => [
+            MessageReceivedEventListener::class,
         ],
     ];
 
