@@ -12,13 +12,17 @@
 					<div class = "card-body">
 						<table class = "table table-bordered">
 							<tbody id = "activities-tbody">
-							@foreach($messages as $message)
+							@forelse($messages as $message)
 								<tr>
 									<td class = "{{ $message->sender_id == auth()->user()->id ? "text-right" : "text-left" }}">
 										{{ $message->created_at->diffForHumans() }} - {{ $message->message }}
 									</td>
 								</tr>
-							@endforeach
+							@empty
+								<tr>
+									<td class="text-center">No message shared yet</td>
+								</tr>
+							@endforelse
 							</tbody>
 						</table>
 					</div>
