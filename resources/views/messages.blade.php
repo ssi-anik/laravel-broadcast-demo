@@ -48,11 +48,13 @@
         let message_count = "{{ $messages->count() }}";
         let conversation_id = "{{ $conversation->id }}";
 
-        Echo.private('conversation-' + conversation_id)
-            .listen('.message-received', (e) => {
+        let channel = Echo.private('conversation-' + conversation_id)
+            channel.listen('.message-received', (e) => {
                 console.log('received message: ', e);
                 prepend_message(e.message, e.on, 'text-left');
                 ++message_count;
+            }).listenForWhisper('typing', function(e){
+                console.log(e);
             });
 
         function show_toast (title, content = null, type = 'info')
@@ -97,6 +99,13 @@
                 show_toast("Error occurred", error.response.data.message, 'error');
             });
         }
+
+        $("#message").on('keyup', function (e) {
+            channel.whisper('typing', {
+                conversation_id: conversation_id,
+	            'name': 'anik',
+            });
+        })
 
         $("#message-form").on('submit', function (e) {
             e.preventDefault();
