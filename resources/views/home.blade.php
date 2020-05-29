@@ -1,8 +1,5 @@
 @extends('layouts.app')
-@section('css')
-	{{--<link href = "https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.css" rel = "stylesheet" />--}}
-	<link rel = "stylesheet" href = "//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-@endsection
+
 @section('content')
 	<div class = "container">
 		<div class = "row justify-content-center">
@@ -52,30 +49,29 @@
 	</div>
 @endsection
 @section('js')
-	{{--<script src = "https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.js"></script>--}}
-	<script type = "text/javascript" src = "//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script type = "text/javascript">
+
+        let user_id = "{{ auth()->user()->id }}";
+        let base_url = "{{ config('app.url') }}";
+        let active_conversation = [];
+
         function show_toast (title, content = null, type = 'info')
         {
-            toastr.options.progressBar = true;
             toastr[type](content, title)
             toastr.options.onclick = function () {
                 toastr.clear();
             }
-            /*let toast = new Toasty({
-                transition: postition, autoClose: true, progressBar: true, duration: 8000,
-            });
-            toast[type](title)*/
+        }
+
+        function going_to_conversation (id)
+        {
+            active_conversation.push(id);
         }
 
         function openInNewTab (url)
         {
             window.open(url, '_blank').focus();
         }
-
-        let user_id = "{{ auth()->user()->id }}";
-        let base_url = "{{ config('app.url') }}";
-        let active_conversation = [];
 
         Echo.private('activities')
             .listen('ActivityEvent', (e) => {
@@ -84,14 +80,22 @@
                 $("#activities-tbody").append(msg);
             });
 
-        /*Echo.private('conversation-phases-' + user_id)
-            .listen('.started', function (e) {
-                let by = e.initiator;
-                if ( e.type == 'connecting' && active_conversation.indexOf(by) < 0 ) {
+        Echo.private('conversation-receiver-' + user_id)
+            .listen('.message-received', function (e) {
+                console.log('requested message received: ', e);
+                if ( !e.sender_id || active_conversation.indexOf(e.sender_id) != -1 ) {
+                    console.log('empty sender_id or conversation in new tab');
+                    return;
+                }
+
+                let name = e.sender_name;
+                let anchor = `<a href="${base_url}/messages/${e.sender_id}" target="_blank" onClick = going_to_conversation(${e.sender_id})>Click HERE to open in new tab</a>`;
+                show_toast('New message request', anchor);
+                /*if ( e.type == 'connecting' && active_conversation.indexOf(by) < 0 ) {
                     active_conversation.push(by);
                     console.log('opening new chat window for messaging with: ' + by);
                     openInNewTab(base_url + "/messages/" + by);
-                }
-            });*/
+                }*/
+            });
 	</script>
 @endsection

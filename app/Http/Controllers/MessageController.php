@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Conversation;
 use App\Events\ConversationCreatedEvent;
 use App\Events\MessageReceivedEvent;
+use App\Events\MessageRequestedEvent;
 use App\Message;
 use App\User;
 use Illuminate\Http\Request;
@@ -65,6 +66,7 @@ class MessageController extends Controller
         $newMessage->save();
 
         event(new MessageReceivedEvent($conversation, $newMessage));
+        event(new MessageRequestedEvent($conversation, auth()->id()));
         // broadcast(new MessageReceivedEvent($conversation, $newMessage));
         // dispatch(new BroadcastEvent(new MessageReceivedEvent($conversation, $newMessage)));
 
